@@ -1,6 +1,10 @@
+--1
 CREATE DATABASE library_management;
 
-CREATE TABLE members(
+CREATE SCHEMA library;
+
+--2 3
+CREATE TABLE library.members (
 	id SERIAL PRIMARY KEY,
 	m_name VARCHAR(100) NOT NULL,
 	email VARCHAR(100) UNIQUE,
@@ -11,19 +15,19 @@ CREATE TABLE members(
 	join_date DATE DEFAULT CURRENT_DATE
 );
 
-CREATE TABLE categories(
+CREATE TABLE library.categories (
 	id SERIAL PRIMARY KEY,
 	c_name VARCHAR(100) NOT NULL,
 	description TEXT
 );
 
-CREATE TABLE authors(
+CREATE TABLE library.authors (
 	id SERIAL PRIMARY KEY,
 	a_name VARCHAR(100) NOT NULL,
 	biography TEXT
 );
 
-CREATE TABLE books(
+CREATE TABLE library.books (
 	id SERIAL PRIMARY KEY,
 	isbn VARCHAR(13) UNIQUE,
 	title VARCHAR(100) NOT NULL,
@@ -34,13 +38,13 @@ CREATE TABLE books(
 	category_id INT REFERENCES categories(id)
 );
 
-CREATE TABLE book_author(
+CREATE TABLE library.book_author (
 	book_id INT NOT NULL REFERENCES books(id),
 	author_id INT NOT NULL REFERENCES authors(id),
 	PRIMARY KEY(book_id, author_id)
 );
 
-CREATE TABLE borrow(
+CREATE TABLE library.borrow (
 	id SERIAL PRIMARY KEY,
 	borrow_date DATE NOT NULL,
 	due_date DATE NOT NULL,
@@ -48,7 +52,7 @@ CREATE TABLE borrow(
 	member_id INT NOT NULL REFERENCES members(id)
 );
 
-CREATE TABLE details(
+CREATE TABLE library.details (
 	borrow_id INT NOT NULL REFERENCES borrow(id),
 	book_id INT NOT NULL REFERENCES books(id),
 	PRIMARY KEY(borrow_id, book_id)
